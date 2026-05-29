@@ -246,6 +246,16 @@ INSERT INTO sys_user (username, password, role) VALUES
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -2625,9 +2635,137 @@ export default {
 
 ---
 
-## Phase 13: Push to GitHub
+## Phase 13: API Documentation
 
-### Task 30: Deploy and push
+### Task 30: Add Swagger API documentation
+
+**Files:**
+- Create: `backend/src/main/java/com/works/config/SwaggerConfig.java`
+
+- [ ] **Step 1: Write SwaggerConfig.java**
+
+```java
+package com.works.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {
+    @Bean
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.works.controller"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title("个人著作信息管理系统 API 文档")
+                .description("个人著作信息管理系统后端接口说明")
+                .version("1.0")
+                .build();
+    }
+}
+```
+
+- [ ] **Step 2: Add Swagger API注解到各Controller**
+
+在 `AuthController.java` 类上添加：
+
+```java
+@Api(tags = "认证管理")
+```
+
+在 `login` 方法上添加：
+
+```java
+@ApiOperation(value = "用户登录")
+@ApiImplicitParams({
+    @ApiImplicitParam(name = "username", value = "用户名", required = true),
+    @ApiImplicitParam(name = "password", value = "密码", required = true)
+})
+```
+
+在 `WorksController.java` 类上添加：
+
+```java
+@Api(tags = "著作管理")
+```
+
+在各方法上添加：
+
+```java
+@ApiOperation(value = "分页查询著作列表")
+@ApiOperation(value = "查询著作详情")
+@ApiOperation(value = "新增著作")
+@ApiOperation(value = "修改著作")
+@ApiOperation(value = "删除著作")
+@ApiOperation(value = "获取所有作者姓名列表")
+```
+
+在 `StatisticsController.java` 类上添加：
+
+```java
+@Api(tags = "统计管理")
+@ApiOperation(value = "获取统计数据")
+```
+
+在 `DictController.java` 类上添加：
+
+```java
+@Api(tags = "数据字典管理")
+```
+
+在各方法上添加：
+
+```java
+@ApiOperation(value = "查询所有字典类型")
+@ApiOperation(value = "新增字典类型")
+@ApiOperation(value = "修改字典类型")
+@ApiOperation(value = "删除字典类型")
+@ApiOperation(value = "查询字典项列表")
+@ApiOperation(value = "新增字典项")
+@ApiOperation(value = "修改字典项")
+@ApiOperation(value = "删除字典项")
+```
+
+在 `UserController.java` 类上添加：
+
+```java
+@Api(tags = "用户管理")
+```
+
+在各方法上添加：
+
+```java
+@ApiOperation(value = "查询所有用户")
+@ApiOperation(value = "查询用户详情")
+@ApiOperation(value = "新增用户")
+@ApiOperation(value = "修改用户")
+@ApiOperation(value = "删除用户")
+```
+
+- [ ] **Step 3: 确认Swagger UI访问地址**
+
+无需额外操作，Swagger UI 访问地址为：`http://localhost:8015/swagger-ui.html`
+
+---
+
+## Phase 14: Push to GitHub
+
+### Task 31: Deploy and push
 
 - [ ] **Step 1: Commit and push everything**
 
