@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.works.mapper.DictMapper">
+    <resultMap id="typeMap" type="DictType">
+        <id column="id" property="id"/><result column="type_code" property="typeCode"/>
+        <result column="type_name" property="typeName"/>
+        <result column="create_time" property="createTime"/><result column="update_time" property="updateTime"/>
+    </resultMap>
+    <resultMap id="itemMap" type="DictItem">
+        <id column="id" property="id"/><result column="type_code" property="typeCode"/>
+        <result column="item_value" property="itemValue"/><result column="sort_order" property="sortOrder"/>
+        <result column="create_time" property="createTime"/><result column="update_time" property="updateTime"/>
+    </resultMap>
+    <select id="findAllTypes" resultMap="typeMap">SELECT * FROM dict_type ORDER BY id</select>
+    <select id="findTypeByCode" resultMap="typeMap">SELECT * FROM dict_type WHERE type_code = #{typeCode}</select>
+    <insert id="insertType" useGeneratedKeys="true" keyProperty="id">INSERT INTO dict_type (type_code, type_name) VALUES (#{typeCode}, #{typeName})</insert>
+    <update id="updateType">UPDATE dict_type SET type_code=#{typeCode}, type_name=#{typeName} WHERE id=#{id}</update>
+    <delete id="deleteType">DELETE FROM dict_type WHERE type_code = #{typeCode}</delete>
+    <select id="findItemsByType" resultMap="itemMap">SELECT * FROM dict_item WHERE type_code = #{typeCode} ORDER BY sort_order</select>
+    <select id="findItemById" resultMap="itemMap">SELECT * FROM dict_item WHERE id = #{id}</select>
+    <insert id="insertItem" useGeneratedKeys="true" keyProperty="id">INSERT INTO dict_item (type_code, item_value, sort_order) VALUES (#{typeCode}, #{itemValue}, #{sortOrder})</insert>
+    <update id="updateItem">UPDATE dict_item SET item_value=#{itemValue}, sort_order=#{sortOrder} WHERE id=#{id}</update>
+    <delete id="deleteItem">DELETE FROM dict_item WHERE id = #{id}</delete>
+</mapper>
