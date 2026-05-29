@@ -155,7 +155,7 @@ CREATE TABLE sys_user (
   id INT PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(100) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL,
-  role VARCHAR(20) NOT NULL DEFAULT 'user' COMMENT 'admin/user',
+  role VARCHAR(20) NOT NULL DEFAULT 'user' COMMENT '管理员/普通用户',
   create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
   update_time DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -262,12 +262,12 @@ INSERT INTO sys_user (username, password, role) VALUES
 
 ```yaml
 server:
-  port: 8080
+  port: 8015
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/works_management?useSSL=false&characterEncoding=utf8mb4
+    url: jdbc:mysql://localhost:13306/works_management?useSSL=false&characterEncoding=utf8mb4
     username: root
-    password: root
+    password: 123
     driver-class-name: com.mysql.jdbc.Driver
   jackson:
     date-format: yyyy-MM-dd
@@ -336,10 +336,10 @@ public class WorksApplication {
 ```js
 module.exports = {
   devServer: {
-    port: 3000,
+    port: 8016,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'http://localhost:8015',
         changeOrigin: true
       }
     }
@@ -377,7 +377,7 @@ public class Result<T> {
         this.data = data;
     }
     public static <T> Result<T> success(T data) {
-        return new Result<>(200, "success", data);
+        return new Result<>(200, "成功", data);
     }
     public static <T> Result<T> error(int code, String message) {
         return new Result<>(code, message, null);
@@ -454,7 +454,7 @@ public class GlobalExceptionHandler {
     }
     @ExceptionHandler(Exception.class)
     public Result<?> handleException(Exception e) {
-        return Result.error(500, "Internal server error: " + e.getMessage());
+        return Result.error(500, "服务器内部错误：" + e.getMessage());
     }
 }
 ```
@@ -569,7 +569,7 @@ public class AuthFilter implements Filter {
         if (authHeader == null || !authHeader.startsWith(Constants.TOKEN_PREFIX)) {
             res.setStatus(401);
             res.setContentType("application/json");
-            res.getWriter().write("{\"code\":401,\"message\":\"Unauthorized\"}");
+            res.getWriter().write("{\"code\":401,\"message\":\"未授权\"}");
             return;
         }
 
@@ -582,7 +582,7 @@ public class AuthFilter implements Filter {
         } catch (Exception e) {
             res.setStatus(401);
             res.setContentType("application/json");
-            res.getWriter().write("{\"code\":401,\"message\":\"Invalid token\"}");
+            res.getWriter().write("{\"code\":401,\"message\":\"无效的令牌\"}");
         }
     }
 }
@@ -605,7 +605,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost:8016")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*");
     }
@@ -704,7 +704,7 @@ public class AuthServiceImpl implements AuthService {
     public Map<String, Object> login(String username, String password) {
         User user = userMapper.findByUsername(username);
         if (user == null || !BCrypt.checkpw(password, user.getPassword())) {
-            throw new BusinessException(401, "Invalid username or password");
+            throw new BusinessException(401, "用户名或密码错误");
         }
         String token = JwtUtil.generateToken(user.getUsername(), user.getRole());
         Map<String, Object> result = new HashMap<>();
@@ -1097,23 +1097,23 @@ public class WorksServiceImpl implements WorksService {
     @Override
     public Works findById(Integer id) {
         Works works = worksMapper.findById(id);
-        if (works == null) throw new BusinessException(404, "Works not found");
+        if (works == null) throw new BusinessException(404, "著作信息不存在");
         return works;
     }
 
     @Override
     public int create(Works works) {
         if (works.getPersonalRank() == null || works.getPersonalRank() <= 0) {
-            throw new BusinessException(400, "Personal rank must be > 0");
+            throw new BusinessException(400, "个人排名必须大于0");
         }
         return worksMapper.insert(works);
     }
 
     @Override
     public int update(Works works) {
-        if (works.getId() == null) throw new BusinessException(400, "ID is required");
+        if (works.getId() == null) throw new BusinessException(400, "ID不能为空");
         if (works.getPersonalRank() != null && works.getPersonalRank() <= 0) {
-            throw new BusinessException(400, "Personal rank must be > 0");
+            throw new BusinessException(400, "个人排名必须大于0");
         }
         return worksMapper.update(works);
     }
