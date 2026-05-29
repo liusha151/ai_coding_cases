@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.works.mapper.WorksMapper">
+    <resultMap id="worksMap" type="Works">
+        <id column="id" property="id"/>
+        <result column="work_no" property="workNo"/>
+        <result column="author_name" property="authorName"/>
+        <result column="work_type" property="workType"/>
+        <result column="work_name" property="workName"/>
+        <result column="publish_path" property="publishPath"/>
+        <result column="status" property="status"/>
+        <result column="personal_rank" property="personalRank"/>
+        <result column="co_authors" property="coAuthors"/>
+        <result column="acquire_date" property="acquireDate"/>
+        <result column="remark" property="remark"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+    <select id="findByPage" resultMap="worksMap">
+        SELECT * FROM works
+        <where>
+            <if test="authorName != null and authorName != ''">AND author_name LIKE CONCAT('%',#{authorName},'%')</if>
+            <if test="workType != null and workType != ''">AND work_type = #{workType}</if>
+            <if test="workName != null and workName != ''">AND work_name LIKE CONCAT('%',#{workName},'%')</if>
+            <if test="status != null and status != ''">AND status = #{status}</if>
+        </where>
+        ORDER BY create_time DESC LIMIT #{size} OFFSET #{offset}
+    </select>
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM works
+        <where>
+            <if test="authorName != null and authorName != ''">AND author_name LIKE CONCAT('%',#{authorName},'%')</if>
+            <if test="workType != null and workType != ''">AND work_type = #{workType}</if>
+            <if test="workName != null and workName != ''">AND work_name LIKE CONCAT('%',#{workName},'%')</if>
+            <if test="status != null and status != ''">AND status = #{status}</if>
+        </where>
+    </select>
+    <select id="findById" resultMap="worksMap">SELECT * FROM works WHERE id = #{id}</select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO works (work_no, author_name, work_type, work_name, publish_path, status, personal_rank, co_authors, acquire_date, remark, create_by)
+        VALUES (#{workNo}, #{authorName}, #{workType}, #{workName}, #{publishPath}, #{status}, #{personalRank}, #{coAuthors}, #{acquireDate}, #{remark}, #{createBy})
+    </insert>
+    <update id="update">
+        UPDATE works SET work_no=#{workNo}, author_name=#{authorName}, work_type=#{workType}, work_name=#{workName},
+        publish_path=#{publishPath}, status=#{status}, personal_rank=#{personalRank}, co_authors=#{coAuthors},
+        acquire_date=#{acquireDate}, remark=#{remark} WHERE id=#{id}
+    </update>
+    <delete id="deleteById">DELETE FROM works WHERE id = #{id}</delete>
+    <select id="findAllAuthorNames" resultType="string">SELECT DISTINCT author_name FROM works ORDER BY author_name</select>
+    <select id="countByWorkType" resultType="map">
+        SELECT work_type AS name, COUNT(*) AS value FROM works
+        <where>
+            <if test="authorName != null and authorName != ''">AND author_name = #{authorName}</if>
+            <if test="workType != null and workType != ''">AND work_type = #{workType}</if>
+        </where>
+        GROUP BY work_type
+    </select>
+    <select id="countByStatus" resultType="map">
+        SELECT status AS name, COUNT(*) AS value FROM works
+        <where>
+            <if test="authorName != null and authorName != ''">AND author_name = #{authorName}</if>
+            <if test="workType != null and workType != ''">AND work_type = #{workType}</if>
+        </where>
+        GROUP BY status
+    </select>
+    <select id="countByRank" resultType="map">
+        SELECT CONCAT(FLOOR((personal_rank-1)/5)*5+1, '-', FLOOR((personal_rank-1)/5)*5+5) AS name, COUNT(*) AS value FROM works
+        <where>
+            <if test="authorName != null and authorName != ''">AND author_name = #{authorName}</if>
+            <if test="workType != null and workType != ''">AND work_type = #{workType}</if>
+        </where>
+        GROUP BY FLOOR((personal_rank-1)/5)
+        ORDER BY name
+    </select>
+    <select id="countByYear" resultType="map">
+        SELECT YEAR(acquire_date) AS name, COUNT(*) AS value FROM works
+        <where>
+            <if test="authorName != null and authorName != ''">AND author_name = #{authorName}</if>
+            <if test="workType != null and workType != ''">AND work_type = #{workType}</if>
+        </where>
+        GROUP BY YEAR(acquire_date) ORDER BY name
+    </select>
+</mapper>
