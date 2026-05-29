@@ -1,0 +1,8 @@
+package com.works.common;
+
+public class Constants {
+    public static final String ROLE_ADMIN = "admin";
+    public static final String ROLE_USER = "user";
+    public static final String TOKEN_HEADER = "Authorization";
+    public static final String TOKEN_PREFIX = "Bearer ";
+}
