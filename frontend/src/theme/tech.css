@@ -1,0 +1,10 @@
+/* 科技风主题 - 深蓝色调 + 发光效果 */
+body { background: #0a1628; color: #e0e8f0; font-family: 'Microsoft YaHei', sans-serif; }
+.app-header { background: linear-gradient(135deg, #0d2137, #1a3a5c); border-bottom: 1px solid #1e90ff; box-shadow: 0 2px 12px rgba(30,144,255,0.3); }
+.app-header .header-title { color: #1e90ff; text-shadow: 0 0 8px rgba(30,144,255,0.5); }
+.el-table { background: #0d2137; color: #c8d6e5; }
+.el-table th { background: #1a3a5c; color: #1e90ff; }
+.el-table--border td { border-color: #1a3a5c; }
+.el-card { background: #0d2137; border: 1px solid #1a3a5c; }
+.el-button--primary { background: #1e90ff; border-color: #1e90ff; }
+.el-input__inner { background: #0a1628; color: #e0e8f0; border-color: #1a3a5c; }
