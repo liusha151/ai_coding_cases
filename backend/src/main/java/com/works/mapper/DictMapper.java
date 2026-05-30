@@ -4,6 +4,9 @@ import com.works.model.DictItem;
 import com.works.model.DictType;
 import java.util.List;
 
+/**
+ * 数据字典 Mapper：字典类型和字典项的数据库操作
+ */
 public interface DictMapper {
     List<DictType> findAllTypes();
     DictType findTypeByCode(String typeCode);

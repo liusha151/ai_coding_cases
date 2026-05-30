@@ -4,6 +4,7 @@
   </el-select>
 </template>
 <script>
+/* 数据字典下拉选择组件：根据 typeCode 从后端加载字典项列表 */
 import { getDictItems } from '../api/dict'
 export default {
   props: { typeCode: String, value: String, placeholder: { type: String, default: '请选择' }, clearable: { type: Boolean, default: true } },

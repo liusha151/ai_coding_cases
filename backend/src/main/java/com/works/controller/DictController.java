@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * 数据字典管理控制器：维护字典类型及字典项的增删改查
+ */
 @RestController
 @RequestMapping("/api/v1/dict")
 @Api(tags = "数据字典管理")
@@ -35,6 +38,7 @@ public class DictController {
     @ApiOperation(value = "删除字典类型")
     public Result<Integer> deleteType(@PathVariable String typeCode) { return Result.success(dictService.deleteType(typeCode)); }
 
+    /** 根据类型编码获取该类型下的所有字典项 */
     @GetMapping("/items/{typeCode}")
     @ApiOperation(value = "查询字典项列表")
     public Result<List<DictItem>> findItemsByType(@PathVariable String typeCode) { return Result.success(dictService.findItemsByType(typeCode)); }

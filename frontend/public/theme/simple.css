@@ -1,0 +1,10 @@
+/* 简略风主题 - 白色背景 + 极简边框 */
+body { background: #f5f5f5; color: #333; font-family: 'Microsoft YaHei', sans-serif; }
+.app-header { background: #fff; border-bottom: 1px solid #e0e0e0; box-shadow: none; }
+.app-header .header-title { color: #333; text-shadow: none; }
+.el-table { background: #fff; color: #333; }
+.el-table th { background: #fafafa; color: #333; }
+.el-table--border td { border-color: #ebeef5; }
+.el-card { background: #fff; border: 1px solid #ebeef5; }
+.el-button--primary { background: #409eff; border-color: #409eff; }
+.el-input__inner { background: #fff; color: #333; border-color: #dcdfe6; }

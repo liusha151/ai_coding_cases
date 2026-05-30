@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
+/**
+ * 统计管理控制器：提供按著作类型、状态、排名、年份的聚合统计
+ */
 @RestController
 @RequestMapping("/api/v1/statistics")
 @Api(tags = "统计管理")
@@ -16,6 +19,7 @@ public class StatisticsController {
     @Autowired
     private StatisticsService statisticsService;
 
+    /** 获取四项统计数据，前端根据图表类型分别渲染 */
     @GetMapping
     @ApiOperation(value = "获取统计数据")
     public Result<Map<String, List<Map<String, Object>>>> getStatistics(StatisticsQueryDTO query) {

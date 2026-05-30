@@ -2,6 +2,7 @@ package com.works.model;
 
 import java.util.List;
 
+/** 通用分页结果，包含数据列表、总数、页码和每页大小 */
 public class PageResult<T> {
     private List<T> list;
     private int total;

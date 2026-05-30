@@ -26,12 +26,14 @@
   </el-container>
 </template>
 <script>
+/* 主布局组件：包含侧边导航菜单和顶部工具栏 */
 import ThemeToggle from '../components/ThemeToggle'
 import { isAdmin } from '../utils/auth'
 export default {
   components: { ThemeToggle },
   computed: { username() { return this.$store.state.username }, isAdmin() { return isAdmin() } },
   methods: {
+    /* 退出登录：清除状态并跳转至登录页 */
     logout() {
       this.$store.commit('LOGOUT'); this.$router.push('/login')
     }

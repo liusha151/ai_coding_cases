@@ -1,5 +1,6 @@
 package com.works.common;
 
+/** 分页请求参数基类，默认第1页每页10条 */
 public class PageRequest {
     private int page = 1;
     private int size = 10;

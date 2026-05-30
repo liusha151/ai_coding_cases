@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+/* 登录页面组件：调用后端 API 进行用户认证 */
 import { login } from '../../api/auth'
 export default {
   data() {
@@ -21,6 +22,7 @@ export default {
     }
   },
   methods: {
+    /* 处理登录请求：验证表单 → 调用 API → 保存 token → 跳转主页 */
     async handleLogin() {
       this.$refs.form.validate(async valid => {
         if (!valid) return

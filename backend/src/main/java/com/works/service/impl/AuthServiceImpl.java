@@ -11,11 +11,15 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 认证业务实现：基于 BCrypt 验证密码，登录成功返回 JWT Token
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
     @Autowired
     private UserMapper userMapper;
 
+    /** 用户登录：查询用户 → BCrypt 校验密码 → 生成 JWT 并返回 */
     @Override
     public Map<String, Object> login(String username, String password) {
         User user = userMapper.findByUsername(username);

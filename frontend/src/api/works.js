@@ -1,7 +1,8 @@
+/* 著作管理 API：分页查询、新增、修改、删除、获取作者列表 */
 import request from '../utils/request'
-export function getWorksList(params) { return request({ url: '/works', method: 'get', params }) }
-export function getWorksDetail(id) { return request({ url: `/works/${id}`, method: 'get' }) }
-export function createWorks(data) { return request({ url: '/works', method: 'post', data }) }
-export function updateWorks(id, data) { return request({ url: `/works/${id}`, method: 'put', data }) }
-export function deleteWorks(id) { return request({ url: `/works/${id}`, method: 'delete' }) }
-export function getAuthorNames() { return request({ url: '/works/author-names', method: 'get' }) }
+export const getWorksList = params => request.get('/works', { params })
+export const getWorksById = id => request.get(`/works/${id}`)
+export const createWorks = data => request.post('/works', data)
+export const updateWorks = (id, data) => request.put(`/works/${id}`, data)
+export const deleteWorks = id => request.delete(`/works/${id}`)
+export const getAuthorNames = () => request.get('/works/author-names')

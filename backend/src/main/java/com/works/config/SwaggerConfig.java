@@ -10,6 +10,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+/**
+ * Swagger 配置：自动扫描 controller 包生成 API 文档
+ * 访问地址：http://localhost:8015/swagger-ui.html
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {

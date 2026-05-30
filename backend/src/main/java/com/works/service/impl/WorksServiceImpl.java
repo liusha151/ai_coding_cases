@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * 著作业务实现：分页查询、详情、新增、修改、删除
+ */
 @Service
 public class WorksServiceImpl implements WorksService {
     @Autowired
@@ -29,6 +32,7 @@ public class WorksServiceImpl implements WorksService {
         return works;
     }
 
+    /** 新增时校验个人排名必须为正整数 */
     @Override
     public int create(Works works) {
         if (works.getPersonalRank() == null || works.getPersonalRank() <= 0) {
@@ -37,6 +41,7 @@ public class WorksServiceImpl implements WorksService {
         return worksMapper.insert(works);
     }
 
+    /** 修改时校验 ID 和排名合法性 */
     @Override
     public int update(Works works) {
         if (works.getId() == null) throw new BusinessException(400, "ID不能为空");

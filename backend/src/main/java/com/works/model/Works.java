@@ -2,21 +2,22 @@ package com.works.model;
 
 import java.util.Date;
 
+/** 著作信息实体，对应数据库 works 表 */
 public class Works {
     private Integer id;
-    private String workNo;
-    private String authorName;
-    private String workType;
-    private String workName;
-    private String publishPath;
-    private String status;
-    private Integer personalRank;
-    private String coAuthors;
-    private Date acquireDate;
-    private String remark;
-    private String createBy;
-    private Date createTime;
-    private Date updateTime;
+    private String workNo;        // 工号
+    private String authorName;    // 姓名
+    private String workType;      // 著作类型（关联 dict_type=work_type）
+    private String workName;      // 名称
+    private String publishPath;   // 发表路径
+    private String status;        // 状态（关联 dict_type=work_status）
+    private Integer personalRank; // 个人排名
+    private String coAuthors;     // 著作人
+    private Date acquireDate;     // 取得时间
+    private String remark;        // 备注
+    private String createBy;      // 创建人
+    private Date createTime;      // 创建时间
+    private Date updateTime;      // 更新时间
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }

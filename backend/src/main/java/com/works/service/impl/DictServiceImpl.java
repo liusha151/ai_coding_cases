@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
+/**
+ * 字典业务实现：字典类型和字典项的 CRUD 委托 Mapper 处理
+ */
 @Service
 public class DictServiceImpl implements DictService {
     @Autowired

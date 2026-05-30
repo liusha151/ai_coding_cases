@@ -66,12 +66,12 @@
         GROUP BY status
     </select>
     <select id="countByRank" resultType="map">
-        SELECT CONCAT(FLOOR((personal_rank-1)/5)*5+1, '-', FLOOR((personal_rank-1)/5)*5+5) AS name, COUNT(*) AS value FROM works
+        SELECT CASE WHEN personal_rank = 1 THEN '排名1' WHEN personal_rank BETWEEN 2 AND 3 THEN '2~3' ELSE '>3' END AS name, COUNT(*) AS value FROM works
         <where>
             <if test="authorName != null and authorName != ''">AND author_name = #{authorName}</if>
             <if test="workType != null and workType != ''">AND work_type = #{workType}</if>
         </where>
-        GROUP BY FLOOR((personal_rank-1)/5)
+        GROUP BY CASE WHEN personal_rank = 1 THEN 1 WHEN personal_rank BETWEEN 2 AND 3 THEN 2 ELSE 3 END
         ORDER BY name
     </select>
     <select id="countByYear" resultType="map">

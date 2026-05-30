@@ -43,6 +43,7 @@
   </div>
 </template>
 <script>
+/* 个人著作列表页：支持分页查询、模糊搜索、新增/编辑/删除操作 */
 import { getWorksList, deleteWorks } from '../../api/works'
 import DictSelect from '../../components/DictSelect'
 import WorksForm from './WorksForm'
@@ -51,6 +52,7 @@ export default {
   components: { DictSelect, WorksForm, WorksDetail },
   data() {
     return {
+      /* 查询条件：支持按姓名、著作类型、名称、状态过滤 */
       query: { authorName: '', workType: '', workName: '', status: '' },
       list: [], page: 1, size: 10, total: 0,
       formVisible: false, formMode: 'add', currentRow: null,
@@ -59,20 +61,25 @@ export default {
   },
   created() { this.search() },
   methods: {
+    /* 分页查询著作列表 */
     async search() {
       this.page = 1
-      const res = await getWorksList({ ...this.query, page: this.page, size: this.size })
+      const res = await getWorksList(Object.assign({}, this.query, { page: this.page, size: this.size }))
       this.list = res.data.list; this.total = res.data.total
     },
+    /* 翻页时重新加载 */
     async handlePageChange(p) {
       this.page = p
-      const res = await getWorksList({ ...this.query, page: this.page, size: this.size })
+      const res = await getWorksList(Object.assign({}, this.query, { page: this.page, size: this.size }))
       this.list = res.data.list; this.total = res.data.total
     },
+    /* 重置搜索条件 */
     reset() { this.query = { authorName: '', workType: '', workName: '', status: '' }; this.search() },
+    /* 弹出新增/编辑对话框 */
     showAdd() { this.formMode = 'add'; this.currentRow = null; this.formVisible = true },
     showEdit(row) { this.formMode = 'edit'; this.currentRow = row; this.formVisible = true },
     showDetail(row) { this.currentRow = row; this.detailVisible = true },
+    /* 删除确认并执行 */
     async handleDelete(row) {
       await this.$confirm('确认删除该著作信息？', '提示', { type: 'warning' })
       await deleteWorks(row.id)

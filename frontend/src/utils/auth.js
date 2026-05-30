@@ -1,3 +1,2 @@
-export function getToken() { return localStorage.getItem('token') }
-export function getRole() { return localStorage.getItem('role') }
-export function isAdmin() { return getRole() === 'admin' }
+/* 鉴权工具函数：检查当前用户是否为 admin 角色 */
+export const isAdmin = () => localStorage.getItem('role') === 'admin'

@@ -1,5 +1,6 @@
 package com.works.model;
 
+/** 统计查询参数 */
 public class StatisticsQueryDTO {
     private String authorName;
     private String workType;

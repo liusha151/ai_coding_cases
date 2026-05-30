@@ -1,5 +1,6 @@
 package com.works.common;
 
+/** 统一 API 响应格式，包含状态码、消息和数据 */
 public class Result<T> {
     private int code;
     private String message;

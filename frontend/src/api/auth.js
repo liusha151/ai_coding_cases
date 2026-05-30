@@ -1,3 +1,4 @@
+/* 认证相关 API：登录/登出 */
 import request from '../utils/request'
-export function login(data) { return request({ url: '/auth/login', method: 'post', data }) }
-export function logout() { return request({ url: '/auth/logout', method: 'post' }) }
+export const login = data => request.post('/auth/login', data)
+export const logout = () => request.post('/auth/logout')

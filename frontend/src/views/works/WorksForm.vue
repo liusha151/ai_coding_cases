@@ -29,6 +29,7 @@
   </el-dialog>
 </template>
 <script>
+/* 著作新增/编辑表单组件：支持数据字典下拉选择、表单验证 */
 import DictSelect from '../../components/DictSelect'
 import { createWorks, updateWorks } from '../../api/works'
 export default {
@@ -36,7 +37,9 @@ export default {
   props: { visible: Boolean, mode: String, row: Object },
   data() {
     return {
+      /* 表单模型：字段默认值与后端 Works 实体对应 */
       form: { workNo: '', authorName: '', workType: '', workName: '', publishPath: '', status: '', personalRank: 1, coAuthors: '', acquireDate: '', remark: '' },
+      /* 表单校验规则：必填字段检查 */
       rules: {
         workNo: [{ required: true, message: '请输入工号' }],
         authorName: [{ required: true, message: '请输入姓名' }],
@@ -50,12 +53,25 @@ export default {
       saving: false
     }
   },
+  /* 编辑模式下监听 row 属性变化，将数据回填至表单 */
   watch: {
-    row: { immediate: true, handler(n) { if (n && this.mode === 'edit') this.form = { ...n } else this.resetForm() } }
+    row: {
+      immediate: true,
+      handler(n) {
+        if (n && this.mode === 'edit') {
+          this.form = Object.assign({}, n)
+        } else {
+          this.resetForm()
+        }
+      }
+    }
   },
   methods: {
+    /* 重置表单至初始状态 */
     resetForm() { this.form = { workNo: '', authorName: '', workType: '', workName: '', publishPath: '', status: '', personalRank: 1, coAuthors: '', acquireDate: '', remark: '' } },
+    /* 对话框关闭时清除验证状态并重置表单 */
     handleClosed() { this.$refs.form.clearValidate(); this.resetForm() },
+    /* 保存操作：新增或更新后触发列表刷新 */
     async save() {
       this.$refs.form.validate(async valid => {
         if (!valid) return

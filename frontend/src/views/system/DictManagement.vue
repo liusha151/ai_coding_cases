@@ -33,6 +33,7 @@
   </div>
 </template>
 <script>
+/* 数据字典管理页面：按字典类型（著作类型/状态）维护字典项，支持增删改 */
 import { getDictItems, createDictItem, updateDictItem, deleteDictItem } from '../../api/dict'
 export default {
   data() {
@@ -43,6 +44,7 @@ export default {
       itemRules: { itemValue: [{ required: true, message: '请输入字典值' }] }
     }
   },
+  /* 切换 Tab 时重新加载当前字典类型的项列表 */
   watch: { activeType: { immediate: true, handler() { this.loadItems() } } },
   methods: {
     async loadItems() { const res = await getDictItems(this.activeType); this.items = res.data || [] },
@@ -51,7 +53,7 @@ export default {
     async saveItem() {
       this.$refs.itemForm.validate(async valid => {
         if (!valid) return
-        const data = { ...this.itemForm, typeCode: this.activeType }
+        const data = Object.assign({}, this.itemForm, { typeCode: this.activeType })
         if (this.itemMode === 'add') await createDictItem(data)
         else await updateDictItem(this.currentItem.id, data)
         this.$message.success('保存成功'); this.itemDialogVisible = false; this.loadItems()

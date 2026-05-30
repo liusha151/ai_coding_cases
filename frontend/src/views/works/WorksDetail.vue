@@ -15,6 +15,7 @@
   </el-dialog>
 </template>
 <script>
+/* 著作详情查看组件：以描述列表形式展示单条著作的完整信息 */
 export default {
   props: { visible: Boolean, row: Object }
 }
